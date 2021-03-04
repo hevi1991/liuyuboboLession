@@ -1,8 +1,3 @@
-/**
- * 线性查找法
- */
-
-
 public class LinearSearch {
 
     // 将构造函数设置为私有，让外部无法实例化

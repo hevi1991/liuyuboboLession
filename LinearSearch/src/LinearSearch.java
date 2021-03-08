@@ -15,11 +15,21 @@ public class LinearSearch {
     }
 
     public static void main(String[] args) {
+        int[] dataSize = {1000000, 10000000};
 
-        Integer[] data = {1, 23, 4, 44, 5, 6, 123};
-        int res = LinearSearch.search(data, 44);
-        System.out.println(res);
+        for (int n : dataSize) {
+            Integer[] data = ArrayGenerator.generateOrderedArray(n);
+            long startTime = System.nanoTime();
+            for (int k = 0; k < 100; k++) {
+                LinearSearch.search(data, n);
+            }
+            long endTime = System.nanoTime();
+            double time = (endTime - startTime) / 1000000000.0;
+            System.out.println("n=" + n + ", 100 runs: " + time + "s");
+        }
 
+
+        /*
         int res2 = LinearSearch.search(data, 1234);
         System.out.println(res2);
 
@@ -30,6 +40,7 @@ public class LinearSearch {
         Student[] students = {student1, student2, student3};
         int studentRes = LinearSearch.search(students, new Student("09125"));
         System.out.println(studentRes);
+        */
     }
 
 }

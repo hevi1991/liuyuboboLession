@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class SelectionSort {
     private SelectionSort() {
     }
@@ -21,6 +23,22 @@ public class SelectionSort {
         E t = arr[i];
         arr[i] = arr[j];
         arr[j] = t;
+    }
+
+    // 从后向前
+    public static <E extends Comparable<E>> void sort2(E[] arr) {
+
+        for (int i = arr.length - 1; i >= 0; i--) {
+
+            int maxIndex = i;
+            for (int j = i - 1; j >= 0; j--) {
+                if (arr[j].compareTo(arr[maxIndex]) > 0) {
+                    maxIndex = j;
+                }
+            }
+            // 交换
+            swap(arr, i, maxIndex);
+        }
     }
 
 
@@ -56,10 +74,15 @@ public class SelectionSort {
         System.out.println(time + "s");*/
 
         // 使用封装后的测试方法，测试 O(n^2) 时间复杂度的运行时间
-        int[] dataSize = {10000, 100000};
+        /*int[] dataSize = {10000, 100000};
         for (int n : dataSize) {
             Integer[] arr = ArrayGenerator.genrateRandomArray(n, n);
             SortingHelper.sortTest(SelectionSort.class.getName(), arr);
-        }
+        }*/
+
+        // 作业
+        Integer[] integers = ArrayGenerator.genrateRandomArray(10, 10);
+        sort2(integers);
+        System.out.println(Arrays.toString(integers));
     }
 }

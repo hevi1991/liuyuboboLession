@@ -20,7 +20,7 @@ public class Student {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Student2 student = (Student2) o;
+        Student student = (Student) o;
         return idNo.equals(student.idNo);
     }
 

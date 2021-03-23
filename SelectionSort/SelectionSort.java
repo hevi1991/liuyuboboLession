@@ -74,11 +74,11 @@ public class SelectionSort {
         System.out.println(time + "s");*/
 
         // 使用封装后的测试方法，测试 O(n^2) 时间复杂度的运行时间
-        /*int[] dataSize = {10000, 100000};
+        int[] dataSize = {10000, 100000};
         for (int n : dataSize) {
             Integer[] arr = ArrayGenerator.genrateRandomArray(n, n);
-            SortingHelper.sortTest(SelectionSort.class.getName(), arr);
-        }*/
+            SortingHelper.sortTest(SelectionSort.class.getName(), null, arr);
+        }
 
         // 作业
         Integer[] integers = ArrayGenerator.genrateRandomArray(10, 10);

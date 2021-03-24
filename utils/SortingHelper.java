@@ -29,7 +29,7 @@ public class SortingHelper {
         long endTime = System.nanoTime();
         double time = (endTime - startTime) / 1000000000.0;
         if (!SortingHelper.isSorted(arr)) {
-            throw new RuntimeException("SelectionSort failed.");
+            throw new RuntimeException(className + " " + methodName + " failed.");
         }
         System.out.println(String.format("%s %s , n = %d : %f s", className, methodName, arr.length, time));
     }

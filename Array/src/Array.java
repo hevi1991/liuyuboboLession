@@ -180,7 +180,7 @@ public class Array<E> {
         data[size] = null;// 释放最后一个对象内存
 
         // 减容
-        if (size == data.length / 2) {
+        if (size == data.length / 4 && data.length / 2 != 0) { // lazy 等于1/4的减容一半，从而优化复杂度震荡且减容后的容量不能为空。
             resize(data.length / 2);
         }
 

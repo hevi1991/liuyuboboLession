@@ -73,12 +73,15 @@ public class Array<E> {
      * @param e     元素
      */
     public void add(int index, E e) {
-        if (size == data.length) {
-            throw new IllegalArgumentException("AddLast failed. Array is full.");
-        }
 
         if (index < 0 || index > size) {
             throw new IllegalArgumentException("Add failed. Require index >= 0 and index <= size.");
+        }
+
+        // 扩容
+        if (size == data.length) {
+//            throw new IllegalArgumentException("AddLast failed. Array is full.");
+            resize(2 * data.length);
         }
 
         for (int i = size - 1; i >= index; i--) {
@@ -87,6 +90,20 @@ public class Array<E> {
 
         data[index] = e;
         size++;
+    }
+
+    /**
+     * 重新配置容量
+     *
+     * @param capacity 容量
+     */
+    private void resize(int capacity) {
+        E[] newData = (E[]) new Object[capacity];
+        for (int i = 0; i < size; i++) {
+            // 将现有元素拷贝到新数组
+            newData[i] = data[i];
+        }
+        data = newData;
     }
 
     /**
@@ -161,6 +178,12 @@ public class Array<E> {
         }
         size--;
         data[size] = null;// 释放最后一个对象内存
+
+        // 减容
+        if (size == data.length / 2) {
+            resize(data.length / 2);
+        }
+
         return res;
     }
 

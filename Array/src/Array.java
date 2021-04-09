@@ -232,4 +232,22 @@ public class Array<E> {
         res.append("]");
         return res.toString();
     }
+
+    /**
+     * 取尾部元素
+     *
+     * @return 元素
+     */
+    public E getLast() {
+        return get(size - 1);
+    }
+
+    /**
+     * 取头部元素
+     *
+     * @return 元素
+     */
+    public E getFirst() {
+        return get(0);
+    }
 }

@@ -1,29 +1,29 @@
 /**
  * 循环队列的实现
+ * 没有size成员变量的循环队列
  *
  * @param <E> 队列元素类型
  */
-public class LoopQueue<E> implements Queue<E> {
+public class LoopQueueV3<E> implements Queue<E> {
 
     private E[] data;
     private int front, tail;
-    private int size;
 
-    public LoopQueue(int capacity) {
+    public LoopQueueV3(int capacity) {
         // 循环队列，需要浪费一个元素位
         data = (E[]) new Object[capacity + 1];
         front = 0;
-        tail = 0;// 指向下一个可用空间
-        size = 0;
+        tail = 0;
     }
 
-    public LoopQueue() {
+    public LoopQueueV3() {
         this(10);
     }
 
     @Override
     public int getSize() {
-        return size;
+        // tail大于等于front，则没包起来，个数就是尾部-头；否则尾减头是负数，头尾已包起来，加上则为总数
+        return tail >= front ? tail - front : tail - front + data.length;
     }
 
     /**
@@ -48,7 +48,6 @@ public class LoopQueue<E> implements Queue<E> {
         }
         data[tail] = e;
         tail = (tail + 1) % data.length;
-        size++;
     }
 
     @Override
@@ -59,8 +58,7 @@ public class LoopQueue<E> implements Queue<E> {
         E ret = data[front];
         data[front] = null;
         front = (front + 1) % data.length;
-        size--;
-        if (size <= (getCapacity() / 4) && getCapacity() / 2 != 0) {
+        if (getSize() <= (getCapacity() / 4) && getCapacity() / 2 != 0) {
             // 缩容
             resize(getCapacity() / 2);
         }
@@ -82,20 +80,20 @@ public class LoopQueue<E> implements Queue<E> {
      */
     private void resize(int capacity) {
         E[] newData = (E[]) new Object[capacity + 1];
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < getSize(); i++) {
             // 将front所在元素插入到新队列中，并把front设置为0
             newData[i] = data[(i + front) % data.length];
         }
         data = newData;
         front = 0;
-        tail = size;
+        tail = getSize();
     }
 
     @Override
     public String toString() {
 
         StringBuilder res = new StringBuilder();
-        res.append(String.format("Queue: size = %d, capacity = %d\n", size, getCapacity()));
+        res.append(String.format("Queue: size = %d, capacity = %d\n", getSize(), getCapacity()));
         res.append("front: [");
         // 两种遍历循环队列的方式
         for (int i = 0; i < getSize(); i++) {
@@ -104,18 +102,12 @@ public class LoopQueue<E> implements Queue<E> {
                 res.append(", ");
             }
         }
-        /*for (int i = front; i != tail; i = (i + 1) % data.length) {
-            res.append(data[i]);
-            if ((i + 1) % data.length != tail) {
-                res.append(", ");
-            }
-        }*/
         res.append("] tail");
         return res.toString();
     }
 
     public static void main(String[] args) {
-        LoopQueue<Integer> queue = new LoopQueue<>();
+        LoopQueueV3<Integer> queue = new LoopQueueV3<>();
         for (int i = 0; i < 10; i++) {
             queue.enqueue(i);
             System.out.println(queue);

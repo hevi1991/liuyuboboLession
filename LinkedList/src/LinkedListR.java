@@ -203,12 +203,43 @@ public class LinkedListR<E> {
         return node;
     }
 
+    public void removeElements(E e) {
+        head = removeElements(head, e);
+    }
+
+    private Node removeElements(Node head, E val) {
+        if (head == null) {
+            return null;
+        }
+        head.next = removeElements(head.next, val);
+        return head.e.equals(val) ? head.next : head;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder res = new StringBuilder();
+        res.append("LinkedListR: ");
+        Node cur = head;
+        while (cur != null) {
+            res.append(cur).append("->");
+            cur = cur.next;
+        }
+        res.append("NULL");
+        return res.toString();
+    }
+
     public static void main(String[] args) {
         LinkedListR<Integer> list = new LinkedListR<>();
         for (int i = 0; i < 3; i++) {
             list.addLast(i + 1);
         }
+        for (int i = 0; i < 3; i++) {
+            list.addLast(i + 1);
+        }
 
         list.remove(2);
+        System.out.println(list);
+        list.removeElements(1);
+        System.out.println(list);
     }
 }

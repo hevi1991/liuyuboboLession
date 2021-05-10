@@ -8,21 +8,33 @@ public class MergeSort {
     private MergeSort() {
     }
 
+
+    /**
+     * 优化归并过程
+     *
+     * @param arr 数组
+     * @param <E> 元素类型
+     */
     public static <E extends Comparable<E>> void sort(E[] arr) {
         sort(arr, 0, arr.length - 1);
     }
 
     private static <E extends Comparable<E>> void sort(E[] arr, int l, int r) {
+
         if (l >= r) {
             return;
         }
 
-//        int mid = (l + r) / 2;
         int mid = l + (r - l) / 2;// 做减法，防止数值超过32位导致越界
         sort(arr, l, mid);
         sort(arr, mid + 1, r);
-        merge(arr, l, mid, r);
+
+        // 左侧数组尾元素 小于 右侧数组头元素可以不需要调整合并
+        if (arr[mid].compareTo(arr[mid + 1]) > 0) {
+            merge(arr, l, mid, r);
+        }
     }
+
 
     /**
      * 优化归并过程
@@ -31,15 +43,17 @@ public class MergeSort {
      * @param <E> 元素类型
      */
     public static <E extends Comparable<E>> void sort2(E[] arr) {
-        sort2(arr, 0, arr.length - 1);
+        sort(arr, 0, arr.length - 1);
     }
 
     private static <E extends Comparable<E>> void sort2(E[] arr, int l, int r) {
-        if (l >= r) {
+
+        // 小规模的数据量使用插入排序法性能更好
+        if (r - l <= 15) {
+            InsertionSort.sort(arr, l, r);
             return;
         }
 
-//        int mid = (l + r) / 2;
         int mid = l + (r - l) / 2;// 做减法，防止数值超过32位导致越界
         sort2(arr, l, mid);
         sort2(arr, mid + 1, r);
@@ -85,12 +99,12 @@ public class MergeSort {
     }
 
     public static void main(String[] args) {
-//        int n = 100000;
-//        Integer[] arr = ArrayGenerator.genrateRandomArray(n, n);
-//        SortingHelper.sortTest("MergeSort", "sort", arr);
+        int n = 5000000;
+        Integer[] arr = ArrayGenerator.genrateRandomArray(n, n);
+        Integer[] arr2 = Arrays.copyOf(arr, arr.length);
 
-        Integer[] arr2 = new Integer[]{7, 1, 4, 2, 8, 3, 6, 5};
-        MergeSort.sort(arr2);
-        System.out.println(Arrays.toString(arr2));
+        SortingHelper.sortTest("MergeSort", "sort", arr);
+        SortingHelper.sortTest("MergeSort", "sort2", arr2);
+
     }
 }

@@ -24,6 +24,32 @@ public class MergeSort {
         merge(arr, l, mid, r);
     }
 
+    /**
+     * 优化归并过程
+     *
+     * @param arr 数组
+     * @param <E> 元素类型
+     */
+    public static <E extends Comparable<E>> void sort2(E[] arr) {
+        sort2(arr, 0, arr.length - 1);
+    }
+
+    private static <E extends Comparable<E>> void sort2(E[] arr, int l, int r) {
+        if (l >= r) {
+            return;
+        }
+
+//        int mid = (l + r) / 2;
+        int mid = l + (r - l) / 2;// 做减法，防止数值超过32位导致越界
+        sort2(arr, l, mid);
+        sort2(arr, mid + 1, r);
+
+        // 左侧数组尾元素 小于 右侧数组头元素可以不需要调整合并
+        if (arr[mid].compareTo(arr[mid + 1]) > 0) {
+            merge(arr, l, mid, r);
+        }
+    }
+
 
     /**
      * 合并两个有序的区间arr[l,mid]和 arr[mid+1,r]
@@ -35,7 +61,7 @@ public class MergeSort {
      * @param <E> 类型
      */
     private static <E extends Comparable<E>> void merge(E[] arr, int l, int mid, int r) {
-        // 复制一份arr
+        // 复制一份arr[l, r)
         E[] temp = Arrays.copyOfRange(arr, l, r + 1);
 
         int i = l, j = mid + 1;
